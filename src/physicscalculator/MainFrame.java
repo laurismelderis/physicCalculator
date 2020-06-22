@@ -24,6 +24,7 @@ public class MainFrame extends javax.swing.JFrame{
     public JButton []paramButtons = new JButton[10];
     public DefaultListModel []models = new DefaultListModel[10];
     public int activeWindow = 0;
+    DefaultListModel editParamModel = new DefaultListModel();
     
     public MainFrame() {
         initComponents();
@@ -109,9 +110,10 @@ public class MainFrame extends javax.swing.JFrame{
         dispParam = new javax.swing.JScrollPane();
         dispParamList = new javax.swing.JList<>();
         editParamAdd = new javax.swing.JButton();
-        editParamApply = new javax.swing.JButton();
-        editParamClose = new javax.swing.JButton();
+        removeParam = new javax.swing.JButton();
         editParamName = new javax.swing.JTextField();
+        paramValue = new javax.swing.JTextField();
+        editParamClose = new javax.swing.JButton();
         setParamCount = new javax.swing.JButton();
         paramCount = new javax.swing.JTextField();
         param0 = new javax.swing.JTextField();
@@ -169,9 +171,10 @@ public class MainFrame extends javax.swing.JFrame{
         jDialog1.getContentPane().add(jFileChooser1, java.awt.BorderLayout.CENTER);
 
         jDialogEditParam.setTitle("Edit");
-        jDialogEditParam.setMinimumSize(new java.awt.Dimension(400, 400));
-        jDialogEditParam.setPreferredSize(new java.awt.Dimension(250, 500));
-        jDialogEditParam.setSize(new java.awt.Dimension(180, 430));
+        jDialogEditParam.setMinimumSize(new java.awt.Dimension(180, 430));
+        jDialogEditParam.setPreferredSize(new java.awt.Dimension(180, 430));
+        jDialogEditParam.setResizable(false);
+        jDialogEditParam.setSize(new java.awt.Dimension(200, 430));
         jDialogEditParam.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 jDialogEditParamWindowClosing(evt);
@@ -179,17 +182,56 @@ public class MainFrame extends javax.swing.JFrame{
         });
         jDialogEditParam.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        dispParamList.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                dispParamListKeyPressed(evt);
+            }
+        });
         dispParam.setViewportView(dispParamList);
 
-        jDialogEditParam.getContentPane().add(dispParam, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 60, 340));
+        jDialogEditParam.getContentPane().add(dispParam, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 70, 340));
 
         editParamAdd.setText("Add");
         editParamAdd.setPreferredSize(new java.awt.Dimension(60, 23));
-        jDialogEditParam.getContentPane().add(editParamAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 360, 70, -1));
+        editParamAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editParamAddActionPerformed(evt);
+            }
+        });
+        editParamAdd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                editParamAddKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(editParamAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 70, 80, -1));
 
-        editParamApply.setText("Apply");
-        editParamApply.setPreferredSize(new java.awt.Dimension(60, 23));
-        jDialogEditParam.getContentPane().add(editParamApply, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 360, 70, -1));
+        removeParam.setText("Remove");
+        removeParam.setPreferredSize(new java.awt.Dimension(60, 23));
+        removeParam.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeParamActionPerformed(evt);
+            }
+        });
+        removeParam.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                removeParamKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(removeParam, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 80, -1));
+
+        editParamName.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                editParamNameKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(editParamName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 70, -1));
+
+        paramValue.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                paramValueKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(paramValue, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 80, 20));
 
         editParamClose.setText("Close");
         editParamClose.setPreferredSize(new java.awt.Dimension(60, 23));
@@ -198,8 +240,12 @@ public class MainFrame extends javax.swing.JFrame{
                 editParamCloseActionPerformed(evt);
             }
         });
-        jDialogEditParam.getContentPane().add(editParamClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 360, 70, -1));
-        jDialogEditParam.getContentPane().add(editParamName, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 60, -1));
+        editParamClose.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                editParamCloseKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(editParamClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 80, -1));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
@@ -380,8 +426,13 @@ public class MainFrame extends javax.swing.JFrame{
     
     private void setParamCountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setParamCountActionPerformed
         String countS = paramCount.getText();
-        int count = Integer.parseInt(countS);
-        setParam(count);
+        try{
+            int count = Integer.parseInt(countS);
+            setParam(count);
+        } catch(Exception e){
+        
+        }
+        
     }//GEN-LAST:event_setParamCountActionPerformed
     public void setParam(int count){
         setInvisible();
@@ -428,89 +479,174 @@ public class MainFrame extends javax.swing.JFrame{
 
     private void editParam3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam3ActionPerformed
         activeWindow = 3;
-        editParamName.setText(param3.getText());
-        loadParamData(models[3]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam3ActionPerformed
 
-    private void editParamCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParamCloseActionPerformed
-        jDialogEditParam.setVisible(false);
-    }//GEN-LAST:event_editParamCloseActionPerformed
+    private void removeParamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeParamActionPerformed
+        int []selectedIndices = dispParamList.getSelectedIndices();
+        for (int i = 0; i < selectedIndices.length; i++){
+            
+        }
+        try{
+            if (dispParamList.getSelectedIndex() == -1){
+                editParamModel.remove(0);
+            }
+            for (int i = 0; i < selectedIndices.length; i++){
+                int index = dispParamList.getSelectedIndex();
+                System.out.println(index);
+                editParamModel.remove(index);
+            }
+        } catch (Exception e){
+            
+        }
+        
+    }//GEN-LAST:event_removeParamActionPerformed
 
     private void editParam0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam0ActionPerformed
         activeWindow = 0;
-        editParamName.setText(param0.getText());
-        loadParamData(models[0]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam0ActionPerformed
 
     private void editParam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam1ActionPerformed
         activeWindow = 1;
-        editParamName.setText(param1.getText());
-        loadParamData(models[1]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam1ActionPerformed
 
     private void editParam2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam2ActionPerformed
         activeWindow = 2;
-        editParamName.setText(param2.getText());
-        loadParamData(models[2]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam2ActionPerformed
 
     private void editParam4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam4ActionPerformed
         activeWindow = 4;
-        editParamName.setText(param4.getText());
-        loadParamData(models[4]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam4ActionPerformed
 
     private void editParam5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam5ActionPerformed
         activeWindow = 5;
-        editParamName.setText(param5.getText());
-        loadParamData(models[5]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam5ActionPerformed
 
     private void editParam6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam6ActionPerformed
         activeWindow = 6;
-        editParamName.setText(param6.getText());
-        loadParamData(models[6]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam6ActionPerformed
 
     private void editParam7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam7ActionPerformed
         activeWindow = 7;
-        editParamName.setText(param7.getText());
-        loadParamData(models[7]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam7ActionPerformed
 
     private void editParam8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam8ActionPerformed
         activeWindow = 8;
-        editParamName.setText(param8.getText());
-        loadParamData(models[8]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam8ActionPerformed
 
     private void editParam9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam9ActionPerformed
-            
         activeWindow = 9;
-        editParamName.setText(param9.getText());
-        loadParamData(models[9]);
+        editParamName.setText(paramTextFields[activeWindow].getText());
+        loadParamData(models[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam9ActionPerformed
 
     private void jDialogEditParamWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_jDialogEditParamWindowClosing
-        closeDialog();
+        closeDialog(activeWindow);
     }//GEN-LAST:event_jDialogEditParamWindowClosing
+
+    private void editParamAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParamAddActionPerformed
+        try{
+            editParamModel.addElement(Double.parseDouble(paramValue.getText()));
+        } catch (Exception e){
+            
+        }
+        dispParamList.setModel(editParamModel);
+    }//GEN-LAST:event_editParamAddActionPerformed
+
+    private void editParamCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParamCloseActionPerformed
+        closeDialog(activeWindow);
+        jDialogEditParam.setVisible(false);
+    }//GEN-LAST:event_editParamCloseActionPerformed
+
+    private void paramValueKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_paramValueKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ENTER){
+            try{
+                editParamModel.addElement(Double.parseDouble(paramValue.getText()));
+                dispParamList.setModel(editParamModel);
+                paramValue.setText("");
+            } catch (Exception e){
+
+            }
+        }
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_paramValueKeyPressed
+
+    private void editParamNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editParamNameKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_editParamNameKeyPressed
+
+    private void editParamAddKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editParamAddKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_editParamAddKeyPressed
+
+    private void removeParamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_removeParamKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_removeParamKeyPressed
+
+    private void dispParamListKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dispParamListKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_dispParamListKeyPressed
+
+    private void editParamCloseKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editParamCloseKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            closeDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_editParamCloseKeyPressed
     public void loadParamData(DefaultListModel model){
         int modelSize = model.getSize();
         double []data = new double[modelSize];
         for (int i = 0; i < modelSize; i++){
             data[i] = Double.parseDouble(model.get(i).toString());
         }
-        DefaultListModel editParamModel = new DefaultListModel();
         for (int i = 0; i < data.length; i++){
             editParamModel.addElement(data[i]);
         }
@@ -541,13 +677,14 @@ public class MainFrame extends javax.swing.JFrame{
         models[9] = model9;
     }
     
-    public void closeDialog(){
-        switch(activeWindow){
-            case 0:
-            
-            break;
+    public void closeDialog(int x){
+        paramTextFields[x].setText(editParamName.getText());
+        models[activeWindow].clear();
+        for (int i = 0; i < editParamModel.getSize(); i++){
+            models[activeWindow].addElement(editParamModel.getElementAt(i));
         }
-        System.out.println("Closed");
+        paramValue.setText("");
+        editParamModel.clear();
     }
     /**
      * @param args the command line arguments
@@ -598,7 +735,6 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JButton editParam8;
     private javax.swing.JButton editParam9;
     private javax.swing.JButton editParamAdd;
-    private javax.swing.JButton editParamApply;
     private javax.swing.JButton editParamClose;
     private javax.swing.JTextField editParamName;
     private javax.swing.JDialog jDialog1;
@@ -637,6 +773,8 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JTextField param8;
     private javax.swing.JTextField param9;
     private javax.swing.JTextField paramCount;
+    private javax.swing.JTextField paramValue;
+    private javax.swing.JButton removeParam;
     private javax.swing.JButton setParamCount;
     // End of variables declaration//GEN-END:variables
 }
