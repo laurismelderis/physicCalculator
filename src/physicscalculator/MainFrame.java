@@ -11,6 +11,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import org.scilab.forge.jlatexmath.TeXConstants;
+import org.scilab.forge.jlatexmath.TeXFormula;
+import org.scilab.forge.jlatexmath.TeXIcon;
 /**
  *
  * @author User
@@ -77,6 +80,7 @@ public class MainFrame extends javax.swing.JFrame{
         
         setInvisible();
         setParam(5);
+        paramCount.setText("5");
         
         
         for (int i = 0; i < 10; i++){
@@ -86,6 +90,10 @@ public class MainFrame extends javax.swing.JFrame{
         for(int i = 0; i < paramLists.length; i++){
             paramLists[i].setModel(models[i]);
         }
+        
+        // -----------------------------
+        
+        
     }
     public void setInvisible(){
         for (int i = 0; i < paramTextFields.length; i++){
@@ -158,6 +166,8 @@ public class MainFrame extends javax.swing.JFrame{
         editParam7 = new javax.swing.JButton();
         editParam8 = new javax.swing.JButton();
         editParam9 = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         jDialog1.setTitle("Open file");
         jDialog1.setMinimumSize(new java.awt.Dimension(600, 400));
@@ -172,7 +182,6 @@ public class MainFrame extends javax.swing.JFrame{
 
         jDialogEditParam.setTitle("Edit");
         jDialogEditParam.setMinimumSize(new java.awt.Dimension(180, 430));
-        jDialogEditParam.setPreferredSize(new java.awt.Dimension(180, 430));
         jDialogEditParam.setResizable(false);
         jDialogEditParam.setSize(new java.awt.Dimension(200, 430));
         jDialogEditParam.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -421,6 +430,17 @@ public class MainFrame extends javax.swing.JFrame{
         });
         getContentPane().add(editParam9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 60, -1));
 
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 230, 120));
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 500, -1, -1));
+
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
@@ -435,6 +455,9 @@ public class MainFrame extends javax.swing.JFrame{
         
     }//GEN-LAST:event_setParamCountActionPerformed
     public void setParam(int count){
+        if (count > paramLists.length){
+            count = paramLists.length;
+        }
         setInvisible();
         for (int i = 0; i < count; i++){
             paramTextFields[i].setVisible(true);
@@ -495,7 +518,6 @@ public class MainFrame extends javax.swing.JFrame{
             }
             for (int i = 0; i < selectedIndices.length; i++){
                 int index = dispParamList.getSelectedIndex();
-                System.out.println(index);
                 editParamModel.remove(index);
             }
         } catch (Exception e){
@@ -641,6 +663,16 @@ public class MainFrame extends javax.swing.JFrame{
             jDialogEditParam.setVisible(false);
         }
     }//GEN-LAST:event_editParamCloseKeyPressed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try{
+            TeXFormula formula = new TeXFormula("\\overline \\alpha = \\text{Hello world!}");
+            TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16.0f);
+            icon.paintIcon(jPanel1, jPanel1.getGraphics(), 0, 0);
+        } catch (Exception e){
+        
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
     public void loadParamData(DefaultListModel model){
         int modelSize = model.getSize();
         double []data = new double[modelSize];
@@ -737,6 +769,7 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JButton editParamAdd;
     private javax.swing.JButton editParamClose;
     private javax.swing.JTextField editParamName;
+    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialogEditParam;
     private javax.swing.JFileChooser jFileChooser1;
@@ -751,6 +784,7 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JList<String> jList7;
     private javax.swing.JList<String> jList8;
     private javax.swing.JList<String> jList9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane0;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
