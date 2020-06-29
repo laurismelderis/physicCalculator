@@ -1,8 +1,13 @@
 package physicscalculator;
 
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import javax.swing.Timer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -10,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.scilab.forge.jlatexmath.TeXConstants;
 import org.scilab.forge.jlatexmath.TeXFormula;
@@ -79,20 +85,23 @@ public class MainFrame extends javax.swing.JFrame{
         loadModels();
         
         setInvisible();
-        setParam(5);
-        paramCount.setText("5");
+        setParam(3);
+        paramCount.setText("3");
         
         
-        for (int i = 0; i < 10; i++){
-            models[i].addElement(i + 0.001);
+        for (int i = 0; i < 3; i++){
+            models[i].addElement(i + 1);
         }
         
         for(int i = 0; i < paramLists.length; i++){
             paramLists[i].setModel(models[i]);
         }
         
-        // -----------------------------
+        paramTextFields[0].setText("x");
+        paramTextFields[1].setText("y");
+        paramTextFields[2].setText("z");
         
+        // -----------------------------
         
     }
     public void setInvisible(){
@@ -122,6 +131,8 @@ public class MainFrame extends javax.swing.JFrame{
         editParamName = new javax.swing.JTextField();
         paramValue = new javax.swing.JTextField();
         editParamClose = new javax.swing.JButton();
+        jDialogCalculate = new javax.swing.JDialog();
+        calculatePanel = new javax.swing.JPanel();
         setParamCount = new javax.swing.JButton();
         paramCount = new javax.swing.JTextField();
         param0 = new javax.swing.JTextField();
@@ -166,8 +177,7 @@ public class MainFrame extends javax.swing.JFrame{
         editParam7 = new javax.swing.JButton();
         editParam8 = new javax.swing.JButton();
         editParam9 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        calculateButton = new javax.swing.JButton();
 
         jDialog1.setTitle("Open file");
         jDialog1.setMinimumSize(new java.awt.Dimension(600, 400));
@@ -256,11 +266,45 @@ public class MainFrame extends javax.swing.JFrame{
         });
         jDialogEditParam.getContentPane().add(editParamClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 80, -1));
 
+        jDialogCalculate.setTitle("Calculate");
+        jDialogCalculate.setMinimumSize(new java.awt.Dimension(500, 500));
+        jDialogCalculate.setPreferredSize(new java.awt.Dimension(500, 500));
+        jDialogCalculate.setResizable(false);
+        jDialogCalculate.setSize(new java.awt.Dimension(500, 500));
+        jDialogCalculate.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jDialogCalculateKeyPressed(evt);
+            }
+        });
+        jDialogCalculate.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        calculatePanel.setBackground(new java.awt.Color(255, 255, 255));
+        calculatePanel.setMinimumSize(new java.awt.Dimension(480, 470));
+        calculatePanel.setPreferredSize(new java.awt.Dimension(480, 470));
+        calculatePanel.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                calculatePanelKeyPressed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout calculatePanelLayout = new javax.swing.GroupLayout(calculatePanel);
+        calculatePanel.setLayout(calculatePanelLayout);
+        calculatePanelLayout.setHorizontalGroup(
+            calculatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 480, Short.MAX_VALUE)
+        );
+        calculatePanelLayout.setVerticalGroup(
+            calculatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 470, Short.MAX_VALUE)
+        );
+
+        jDialogCalculate.getContentPane().add(calculatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 460, 440));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
-        setMinimumSize(new java.awt.Dimension(1080, 720));
-        setPreferredSize(new java.awt.Dimension(1080, 720));
-        setSize(new java.awt.Dimension(1080, 720));
+        setMinimumSize(new java.awt.Dimension(730, 580));
+        setPreferredSize(new java.awt.Dimension(730, 580));
+        setSize(new java.awt.Dimension(730, 580));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         setParamCount.setText("Set");
@@ -430,16 +474,13 @@ public class MainFrame extends javax.swing.JFrame{
         });
         getContentPane().add(editParam9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 60, -1));
 
-        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 230, 120));
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        calculateButton.setText("Calculate");
+        calculateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                calculateButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 500, -1, -1));
+        getContentPane().add(calculateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -664,15 +705,46 @@ public class MainFrame extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_editParamCloseKeyPressed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try{
-            TeXFormula formula = new TeXFormula("\\overline \\alpha = \\text{Hello world!}");
-            TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16.0f);
-            icon.paintIcon(jPanel1, jPanel1.getGraphics(), 0, 0);
-        } catch (Exception e){
-        
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        jDialogCalculate.setVisible(true);
+        String formula = "\\begin{gather}"
+                + "\\overline{"+ paramTextFields[0].getText()+"} = " + arithmeticMean(models[0]) + "\\\\"
+                + "a+b=c"
+                + "\\end{gather}";
+        writeFormulas(formula);
+    }//GEN-LAST:event_calculateButtonActionPerformed
+
+    private void calculatePanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calculatePanelKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            jDialogCalculate.setVisible(false);
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_calculatePanelKeyPressed
+
+    private void jDialogCalculateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDialogCalculateKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            jDialogCalculate.setVisible(false);
+        }
+    }//GEN-LAST:event_jDialogCalculateKeyPressed
+    public void writeFormulas(String math){
+        Timer timer = new Timer(250, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e){
+                try {
+                    Graphics g = calculatePanel.getGraphics();
+                    TeXFormula formula = new TeXFormula(math);
+                    TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16);
+                    icon.paintIcon(calculatePanel, g, 0, 0);
+                } catch (Exception ex){
+                    System.out.println("Failed rendering");
+                }
+            }
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
+    
     public void loadParamData(DefaultListModel model){
         int modelSize = model.getSize();
         double []data = new double[modelSize];
@@ -718,6 +790,19 @@ public class MainFrame extends javax.swing.JFrame{
         paramValue.setText("");
         editParamModel.clear();
     }
+    
+    public double arithmeticMean(DefaultListModel model){
+        int modelSize = model.getSize();
+        double []data = new double[modelSize];
+        double answer = 0;
+        for (int i = 0; i < modelSize; i++){
+            data[i] = Double.parseDouble(model.get(i).toString());
+        }
+        for (int i = 0; i < data.length; i++){
+            answer += data[i];
+        }
+        return answer/data.length;
+    }
     /**
      * @param args the command line arguments
      */
@@ -754,6 +839,8 @@ public class MainFrame extends javax.swing.JFrame{
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton calculateButton;
+    private javax.swing.JPanel calculatePanel;
     private javax.swing.JScrollPane dispParam;
     private javax.swing.JList<String> dispParamList;
     private javax.swing.JButton editParam0;
@@ -769,8 +856,8 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JButton editParamAdd;
     private javax.swing.JButton editParamClose;
     private javax.swing.JTextField editParamName;
-    private javax.swing.JButton jButton1;
     private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialogCalculate;
     private javax.swing.JDialog jDialogEditParam;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
@@ -784,7 +871,6 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JList<String> jList7;
     private javax.swing.JList<String> jList8;
     private javax.swing.JList<String> jList9;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane0;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
