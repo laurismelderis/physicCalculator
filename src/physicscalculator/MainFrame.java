@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JDialog;
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -32,9 +33,11 @@ public class MainFrame extends javax.swing.JFrame{
     public JList []paramLists = new JList[10]; 
     public JButton []paramButtons = new JButton[10];
     public DefaultListModel []paramModels = new DefaultListModel[10];
+    public JTextField []paramMistakes = new JTextField[10];
     public int activeWindow = 0;
     public int openedWindows = 0;
     DefaultListModel editParamModel = new DefaultListModel();
+    public double studentsCoefficientBeta[] = {0.70, 0.95, 0.99};
     
     public MainFrame() {
         DefaultListModel model0 = new DefaultListModel();
@@ -105,24 +108,99 @@ public class MainFrame extends javax.swing.JFrame{
         paramModels[8] = model8;
         paramModels[9] = model9;
         
-        setInvisible();
-        setParamVisible(3);
-        paramCount.setText("3");
+        paramMistakes[0] = paramMistake0;
+        paramMistakes[1] = paramMistake1;
+        paramMistakes[2] = paramMistake2;
+        paramMistakes[3] = paramMistake3;
+        paramMistakes[4] = paramMistake4;
+        paramMistakes[5] = paramMistake5;
+        paramMistakes[6] = paramMistake6;
+        paramMistakes[7] = paramMistake7;
+        paramMistakes[8] = paramMistake8;
+        paramMistakes[9] = paramMistake9;
         
         
-        for (int i = 0; i < 3; i++){
-            paramModels[i].addElement(i + 1);
+        writeFormulas("t_\\beta (n) \\ \\beta = ", studentsCoefficientPanel);
+        
+        for (int i = 0; i < studentsCoefficientBeta.length; i++){
+            studentsCoefficientComboBox.addItem(String.valueOf(studentsCoefficientBeta[i]));
         }
+        studentsCoefficientComboBox.setSelectedIndex(1);
+        
+        loadExample(2);
         
         for(int i = 0; i < paramLists.length; i++){
             paramLists[i].setModel(paramModels[i]);
         }
         
-        paramNames[0].setText("x");
-        paramNames[1].setText("y");
-        paramNames[2].setText("z");
-        
         // -----------------------------
+        
+    }
+    
+    public void loadExample(int type){
+        switch(type){
+            case -1:
+                setParamVisible(3);
+                paramCount.setText("3");
+                paramNames[0].setText("x");
+                paramNames[1].setText("y");
+                paramNames[2].setText("z");
+
+                paramMistakes[0].setText("0.005");
+                paramMistakes[1].setText("0.01");
+                paramMistakes[2].setText("0.5");
+                for (int i = 0; i < 3; i++){
+                    paramModels[i].addElement(i + 1);
+                }
+            break;
+            case 1:
+                setParamVisible(2);
+                paramCount.setText("2");
+                
+                paramNames[0].setText("h");
+                paramNames[1].setText("d");
+                
+                paramMistakes[0].setText("0.05");
+                paramMistakes[1].setText("0.01");
+                
+                paramModels[0].addElement(41.15);
+                paramModels[0].addElement(41.1);
+                paramModels[0].addElement(41.15);
+                paramModels[0].addElement(41.15);
+                paramModels[0].addElement(41.2);
+                paramModels[0].addElement(41.1);
+                paramModels[0].addElement(41.15);
+                paramModels[0].addElement(41.2);
+                paramModels[0].addElement(41.15);
+                paramModels[0].addElement(41.15);
+
+                paramModels[1].addElement(12.12);
+                paramModels[1].addElement(12.09);
+                paramModels[1].addElement(12.08);
+                paramModels[1].addElement(12.04);
+                paramModels[1].addElement(12.05);
+                paramModels[1].addElement(12.03);
+                paramModels[1].addElement(12.03);
+                paramModels[1].addElement(12.1);
+                paramModels[1].addElement(12.07);
+                paramModels[1].addElement(12.1);
+            break;
+            case 2:
+                setParamVisible(1);
+                paramCount.setText("1");
+                
+                paramNames[0].setText("t");
+                
+                paramMistakes[0].setText("0.001");
+
+                paramModels[0].addElement(2.601);
+                paramModels[0].addElement(2.597);
+                paramModels[0].addElement(2.585);
+                paramModels[0].addElement(2.587);
+                paramModels[0].addElement(2.601);
+                
+            break;
+        }
         
     }
     /**
@@ -144,6 +222,7 @@ public class MainFrame extends javax.swing.JFrame{
         editParamName = new javax.swing.JTextField();
         paramValue = new javax.swing.JTextField();
         editParamClose = new javax.swing.JButton();
+        editParamMistake = new javax.swing.JTextField();
         jDialogCalculate = new javax.swing.JDialog();
         calculatePanel = new javax.swing.JPanel();
         setParamCount = new javax.swing.JButton();
@@ -191,6 +270,20 @@ public class MainFrame extends javax.swing.JFrame{
         editParam8 = new javax.swing.JButton();
         editParam9 = new javax.swing.JButton();
         calculateButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        studentsCoefficientComboBox = new javax.swing.JComboBox<>();
+        studentsCoefficientPanel = new javax.swing.JPanel();
+        paramMistake0 = new javax.swing.JTextField();
+        paramMistake1 = new javax.swing.JTextField();
+        paramMistake2 = new javax.swing.JTextField();
+        paramMistake3 = new javax.swing.JTextField();
+        paramMistake4 = new javax.swing.JTextField();
+        paramMistake5 = new javax.swing.JTextField();
+        paramMistake6 = new javax.swing.JTextField();
+        paramMistake7 = new javax.swing.JTextField();
+        paramMistake8 = new javax.swing.JTextField();
+        paramMistake9 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         jDialog1.setTitle("Open file");
         jDialog1.setMinimumSize(new java.awt.Dimension(600, 400));
@@ -279,10 +372,18 @@ public class MainFrame extends javax.swing.JFrame{
         });
         jDialogEditParam.getContentPane().add(editParamClose, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, 90, -1));
 
+        editParamMistake.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                editParamMistakeKeyPressed(evt);
+            }
+        });
+        jDialogEditParam.getContentPane().add(editParamMistake, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 90, 20));
+
         jDialogCalculate.setTitle("Calculate");
-        jDialogCalculate.setMinimumSize(new java.awt.Dimension(500, 500));
+        jDialogCalculate.setMinimumSize(new java.awt.Dimension(500, 700));
+        jDialogCalculate.setPreferredSize(new java.awt.Dimension(500, 700));
         jDialogCalculate.setResizable(false);
-        jDialogCalculate.setSize(new java.awt.Dimension(500, 500));
+        jDialogCalculate.setSize(new java.awt.Dimension(500, 700));
         jDialogCalculate.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jDialogCalculateKeyPressed(evt);
@@ -307,16 +408,17 @@ public class MainFrame extends javax.swing.JFrame{
         );
         calculatePanelLayout.setVerticalGroup(
             calculatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 470, Short.MAX_VALUE)
+            .addGap(0, 640, Short.MAX_VALUE)
         );
 
-        jDialogCalculate.getContentPane().add(calculatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 460, 440));
+        jDialogCalculate.getContentPane().add(calculatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 460, 640));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
-        setMinimumSize(new java.awt.Dimension(730, 580));
-        setPreferredSize(new java.awt.Dimension(730, 580));
-        setSize(new java.awt.Dimension(730, 580));
+        setMinimumSize(new java.awt.Dimension(750, 570));
+        setPreferredSize(new java.awt.Dimension(750, 570));
+        setResizable(false);
+        setSize(new java.awt.Dimension(750, 570));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         setParamCount.setText("Set");
@@ -401,7 +503,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam0ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam0, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 460, 60, -1));
+        getContentPane().add(editParam0, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 60, -1));
 
         editParam1.setText("edit");
         editParam1.addActionListener(new java.awt.event.ActionListener() {
@@ -409,7 +511,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam1ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 460, 60, -1));
+        getContentPane().add(editParam1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 500, 60, -1));
 
         editParam2.setText("edit");
         editParam2.addActionListener(new java.awt.event.ActionListener() {
@@ -417,7 +519,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam2ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 460, 60, -1));
+        getContentPane().add(editParam2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 500, 60, -1));
 
         editParam3.setText("edit");
         editParam3.addActionListener(new java.awt.event.ActionListener() {
@@ -425,7 +527,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam3ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 460, 60, -1));
+        getContentPane().add(editParam3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 500, 60, -1));
 
         editParam4.setText("edit");
         editParam4.addActionListener(new java.awt.event.ActionListener() {
@@ -433,7 +535,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam4ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 460, 60, -1));
+        getContentPane().add(editParam4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 500, 60, -1));
 
         editParam5.setText("edit");
         editParam5.addActionListener(new java.awt.event.ActionListener() {
@@ -441,7 +543,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam5ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 460, 60, -1));
+        getContentPane().add(editParam5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 500, 60, -1));
 
         editParam6.setText("edit");
         editParam6.addActionListener(new java.awt.event.ActionListener() {
@@ -449,7 +551,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam6ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 460, 60, -1));
+        getContentPane().add(editParam6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 500, 60, -1));
 
         editParam7.setText("edit");
         editParam7.addActionListener(new java.awt.event.ActionListener() {
@@ -457,7 +559,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam7ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 460, 60, -1));
+        getContentPane().add(editParam7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 500, 60, -1));
 
         editParam8.setText("edit");
         editParam8.addActionListener(new java.awt.event.ActionListener() {
@@ -465,7 +567,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam8ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 460, 60, -1));
+        getContentPane().add(editParam8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 500, 60, -1));
 
         editParam9.setText("edit");
         editParam9.addActionListener(new java.awt.event.ActionListener() {
@@ -473,7 +575,7 @@ public class MainFrame extends javax.swing.JFrame{
                 editParam9ActionPerformed(evt);
             }
         });
-        getContentPane().add(editParam9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 460, 60, -1));
+        getContentPane().add(editParam9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 500, 60, -1));
 
         calculateButton.setText("Calculate");
         calculateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -481,7 +583,38 @@ public class MainFrame extends javax.swing.JFrame{
                 calculateButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(calculateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, -1, -1));
+        getContentPane().add(calculateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, -1, -1));
+
+        jLabel2.setText("Students coefficient");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 120, 20));
+
+        getContentPane().add(studentsCoefficientComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, 70, -1));
+
+        javax.swing.GroupLayout studentsCoefficientPanelLayout = new javax.swing.GroupLayout(studentsCoefficientPanel);
+        studentsCoefficientPanel.setLayout(studentsCoefficientPanelLayout);
+        studentsCoefficientPanelLayout.setHorizontalGroup(
+            studentsCoefficientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 60, Short.MAX_VALUE)
+        );
+        studentsCoefficientPanelLayout.setVerticalGroup(
+            studentsCoefficientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 20, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(studentsCoefficientPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 10, 60, 20));
+        getContentPane().add(paramMistake0, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 470, 60, -1));
+        getContentPane().add(paramMistake1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 470, 60, -1));
+        getContentPane().add(paramMistake2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, 60, -1));
+        getContentPane().add(paramMistake3, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 470, 60, -1));
+        getContentPane().add(paramMistake4, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 470, 60, -1));
+        getContentPane().add(paramMistake5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 470, 60, -1));
+        getContentPane().add(paramMistake6, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 470, 60, -1));
+        getContentPane().add(paramMistake7, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 470, 60, -1));
+        getContentPane().add(paramMistake8, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 470, 60, -1));
+        getContentPane().add(paramMistake9, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 470, 60, -1));
+
+        jLabel3.setText("Measure mistakes");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -508,6 +641,7 @@ public class MainFrame extends javax.swing.JFrame{
             paramScrollPanes[i].setVisible(true);
             paramLists[i].setVisible(true);
             paramButtons[i].setVisible(true);
+            paramMistakes[i].setVisible(true);
         }
     }
     
@@ -593,7 +727,7 @@ public class MainFrame extends javax.swing.JFrame{
 
     private void editParamNameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editParamNameKeyPressed
         int index = evt.getKeyCode();
-        if (index == KeyEvent.VK_ESCAPE){
+        if (index == KeyEvent.VK_ESCAPE || index == KeyEvent.VK_ENTER){
             closeEditParamDialog(activeWindow);
             jDialogEditParam.setVisible(false);
         }
@@ -635,13 +769,17 @@ public class MainFrame extends javax.swing.JFrame{
         jDialogCalculate.setVisible(true);
         JTextField activeNames[] = new JTextField[openedWindows];
         DefaultListModel activeModels[] = new DefaultListModel[openedWindows];
+        double activeMistakes[] = new double[openedWindows];
         for (int i = 0; i < openedWindows; i++){
             activeNames[i] = paramNames[i];
             activeModels[i] = paramModels[i];
+            activeMistakes[i] = Double.parseDouble(paramMistakes[i].getText().toString());
         }
-        Formulas formulas = new Formulas(activeNames, activeModels);
+        Formulas formulas = new Formulas(activeNames, activeModels,
+                Double.parseDouble(studentsCoefficientComboBox.getSelectedItem().toString()),
+                activeMistakes);
         String formula = formulas.getFormulas();
-        writeFormulas(formula);
+        writeFormulas(formula, calculatePanel);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void calculatePanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calculatePanelKeyPressed
@@ -657,7 +795,7 @@ public class MainFrame extends javax.swing.JFrame{
             jDialogCalculate.setVisible(false);
         }
     }//GEN-LAST:event_jDialogCalculateKeyPressed
-    public void writeFormulas(String math){
+    public void writeFormulas(String math, JPanel calculatePanel){
         Timer timer = new Timer(250, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
@@ -681,6 +819,7 @@ public class MainFrame extends javax.swing.JFrame{
             paramScrollPanes[i].setVisible(false);
             paramLists[i].setVisible(false);
             paramButtons[i].setVisible(false);
+            paramMistakes[i].setVisible(false);
         }
     }
     
@@ -698,6 +837,7 @@ public class MainFrame extends javax.swing.JFrame{
     
     public void closeEditParamDialog(int x){
         paramNames[x].setText(editParamName.getText());
+        paramMistakes[x].setText(editParamMistake.getText());
         paramModels[activeWindow].clear();
         for (int i = 0; i < editParamModel.getSize(); i++){
             paramModels[activeWindow].addElement(editParamModel.getElementAt(i));
@@ -709,6 +849,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam0ActionPerformed
         activeWindow = 0;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam0ActionPerformed
@@ -716,6 +857,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam1ActionPerformed
         activeWindow = 1;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam1ActionPerformed
@@ -723,6 +865,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam2ActionPerformed
         activeWindow = 2;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam2ActionPerformed
@@ -730,6 +873,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam3ActionPerformed
         activeWindow = 3;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam3ActionPerformed
@@ -737,6 +881,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam4ActionPerformed
         activeWindow = 4;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam4ActionPerformed
@@ -744,6 +889,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam5ActionPerformed
         activeWindow = 5;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam5ActionPerformed
@@ -751,6 +897,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam6ActionPerformed
         activeWindow = 6;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam6ActionPerformed
@@ -758,6 +905,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam7ActionPerformed
         activeWindow = 7;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam7ActionPerformed
@@ -765,6 +913,7 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam8ActionPerformed
         activeWindow = 8;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam8ActionPerformed
@@ -772,9 +921,18 @@ public class MainFrame extends javax.swing.JFrame{
     private void editParam9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editParam9ActionPerformed
         activeWindow = 9;
         editParamName.setText(paramNames[activeWindow].getText());
+        editParamMistake.setText(paramMistakes[activeWindow].getText());
         loadParamData(paramModels[activeWindow]);
         jDialogEditParam.setVisible(true);
     }//GEN-LAST:event_editParam9ActionPerformed
+
+    private void editParamMistakeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_editParamMistakeKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE || index == KeyEvent.VK_ENTER){
+            closeEditParamDialog(activeWindow);
+            jDialogEditParam.setVisible(false);
+        }
+    }//GEN-LAST:event_editParamMistakeKeyPressed
 
     /**
      * @param args the command line arguments
@@ -828,12 +986,15 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JButton editParam9;
     private javax.swing.JButton editParamAdd;
     private javax.swing.JButton editParamClose;
+    private javax.swing.JTextField editParamMistake;
     private javax.swing.JTextField editParamName;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JDialog jDialogCalculate;
     private javax.swing.JDialog jDialogEditParam;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JList<String> jList0;
     private javax.swing.JList<String> jList1;
     private javax.swing.JList<String> jList2;
@@ -866,8 +1027,20 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JTextField param8;
     private javax.swing.JTextField param9;
     private javax.swing.JTextField paramCount;
+    private javax.swing.JTextField paramMistake0;
+    private javax.swing.JTextField paramMistake1;
+    private javax.swing.JTextField paramMistake2;
+    private javax.swing.JTextField paramMistake3;
+    private javax.swing.JTextField paramMistake4;
+    private javax.swing.JTextField paramMistake5;
+    private javax.swing.JTextField paramMistake6;
+    private javax.swing.JTextField paramMistake7;
+    private javax.swing.JTextField paramMistake8;
+    private javax.swing.JTextField paramMistake9;
     private javax.swing.JTextField paramValue;
     private javax.swing.JButton removeParam;
     private javax.swing.JButton setParamCount;
+    private javax.swing.JComboBox<String> studentsCoefficientComboBox;
+    private javax.swing.JPanel studentsCoefficientPanel;
     // End of variables declaration//GEN-END:variables
 }
