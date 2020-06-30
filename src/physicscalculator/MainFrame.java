@@ -127,7 +127,7 @@ public class MainFrame extends javax.swing.JFrame{
         }
         studentsCoefficientComboBox.setSelectedIndex(1);
         
-        loadExample(2);
+        loadExample(3);
         
         for(int i = 0; i < paramLists.length; i++){
             paramLists[i].setModel(paramModels[i]);
@@ -804,20 +804,23 @@ public class MainFrame extends javax.swing.JFrame{
                 activeMistakes);
         String formula = formulas.getFormulas();
         switch (openedWindows){
-            case 4:
+            case 3:
                 formulaSize = 14;
             break;
-            case 5:
+            case 4:
                 formulaSize = 12;
             break;
-            case 6:
+            case 5:
                 formulaSize = 10;
             break;
-            case 7:
+            case 6:
                 formulaSize = 9;
             break;
-            case 8:
+            case 7:
                 formulaSize = 8;
+            break;
+            case 8:
+                formulaSize = 7;
             break;
             case 9:
                 formulaSize = 6;

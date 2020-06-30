@@ -131,7 +131,7 @@ public class Formulas {
     }
     
     private double systematicError(double measureMistake, int paramLength, double studentsCoefficientInf){
-        return Misc.significantNumbers(((measureMistake/paramLength)*studentsCoefficientInf), 2);
+        return Misc.significantNumbers(((measureMistake/3)*studentsCoefficientInf), 2);
     }
     
     private double finalAbsoluteError(double absoluteError, double systematicError){
@@ -153,13 +153,14 @@ public class Formulas {
     public String getFormulas(){
         String formula = "";
         // Arithmetic mean
-        formula += "\\text{Arithmetic mean} \\\\";
+        formula += "\\text{Arithmetic mean } \\overline{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i  \\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "\\overline{" + paramName[i].getText() + "} = " + arithmeticMean[i] + " \\\\ ";
         }
         
         // Mean squared error
-        formula += "\\text{Mean squared error} \\\\";
+        formula += "\\text{Mean squared error } s_x = \\sqrt{\\frac{\\sum_{i=1}^{n}( \\, x_i - \\overline{x} ) \\, ^2}"
+                + "{n (\\, n - 1 ) \\,}} \\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "s_{" + paramName[i].getText() + "} = " + meanSquaredError[i] + " \\\\ ";
         }
@@ -175,27 +176,27 @@ public class Formulas {
                     studentsCoefficientInf + "\\\\";
         
         //Absolute error
-        formula += "\\text{Absolute error} \\\\";
+        formula += "\\text{Absolute error } \\Delta x_s = s_xt_\\beta (n) \\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "\\Delta " + paramName[i].getText() + "_{s} = " +
                     absoluteError[i] + " \\\\ ";
         }
         
         //Systematic error
-        formula += "\\text{Systematic error} \\\\";
+        formula += "\\text{Systematic error } \\Delta x_\\delta = \\frac{\\delta x}{3} t_\\beta (\\infty)\\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "\\Delta " + paramName[i].getText() + "_{\\delta} = " +
                     systematicError[i] + " \\\\ ";
         }
         
         //Final absolute error
-        formula += "\\text{Final absolute error} \\\\";
+        formula += "\\text{Final absolute error } \\Delta x = \\sqrt{(\\Delta x_s)^2 + (\\Delta x_\\delta)^2} \\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "\\Delta " + paramName[i].getText() + " = " + finalAbsoluteError[i] + "\\\\";
         }
         
         //Relative error
-        formula += "\\text{Relative error} \\\\";
+        formula += "\\text{Relative error } \\varepsilon_x = \\frac{\\Delta x}{\\overline{x}}100\\% \\\\";
         for (int i = 0; i < paramLength; i++){
             formula += "\\varepsilon _{"+paramName[i].getText()+"} = " + relativeError[i] + "\\%\\\\";
         }
