@@ -120,7 +120,7 @@ public class MainFrame extends javax.swing.JFrame{
         paramMistakes[9] = paramMistake9;
         
         
-        writeFormulas("t_\\beta (n) \\ \\beta = ", studentsCoefficientPanel);
+        writeFormulas("t_\\beta (n) \\ \\beta = ", studentsCoefficientPanel, 16);
         
         for (int i = 0; i < studentsCoefficientBeta.length; i++){
             studentsCoefficientComboBox.addItem(String.valueOf(studentsCoefficientBeta[i]));
@@ -198,6 +198,29 @@ public class MainFrame extends javax.swing.JFrame{
                 paramModels[0].addElement(2.585);
                 paramModels[0].addElement(2.587);
                 paramModels[0].addElement(2.601);
+                
+            break;
+            case 3:
+                setParamVisible(10);
+                paramCount.setText("10");
+                
+                paramNames[0].setText("a");
+                paramNames[1].setText("b");
+                paramNames[2].setText("c");
+                paramNames[3].setText("d");
+                paramNames[4].setText("e");
+                paramNames[5].setText("a");
+                paramNames[6].setText("b");
+                paramNames[7].setText("c");
+                paramNames[8].setText("d");
+                paramNames[9].setText("e");
+                
+                for(int i = 0; i < 10; i++){
+                    paramMistakes[i].setText("0.01");
+                    for (int j = 0; j < 8; j++){
+                        paramModels[i].addElement(j + i/10);
+                    }
+                }
                 
             break;
         }
@@ -766,6 +789,7 @@ public class MainFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_editParamCloseKeyPressed
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        int formulaSize = 16;
         jDialogCalculate.setVisible(true);
         JTextField activeNames[] = new JTextField[openedWindows];
         DefaultListModel activeModels[] = new DefaultListModel[openedWindows];
@@ -779,7 +803,30 @@ public class MainFrame extends javax.swing.JFrame{
                 Double.parseDouble(studentsCoefficientComboBox.getSelectedItem().toString()),
                 activeMistakes);
         String formula = formulas.getFormulas();
-        writeFormulas(formula, calculatePanel);
+        switch (openedWindows){
+            case 4:
+                formulaSize = 14;
+            break;
+            case 5:
+                formulaSize = 12;
+            break;
+            case 6:
+                formulaSize = 10;
+            break;
+            case 7:
+                formulaSize = 9;
+            break;
+            case 8:
+                formulaSize = 8;
+            break;
+            case 9:
+                formulaSize = 6;
+            break;
+            case 10:
+                formulaSize = 6;
+            break;
+        }
+        writeFormulas(formula, calculatePanel, formulaSize);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void calculatePanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calculatePanelKeyPressed
@@ -795,14 +842,14 @@ public class MainFrame extends javax.swing.JFrame{
             jDialogCalculate.setVisible(false);
         }
     }//GEN-LAST:event_jDialogCalculateKeyPressed
-    public void writeFormulas(String math, JPanel calculatePanel){
+    public void writeFormulas(String math, JPanel calculatePanel, int size){
         Timer timer = new Timer(250, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e){
                 try {
                     Graphics g = calculatePanel.getGraphics();
                     TeXFormula formula = new TeXFormula(math);
-                    TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, 16);
+                    TeXIcon icon = formula.createTeXIcon(TeXConstants.STYLE_DISPLAY, size);
                     icon.paintIcon(calculatePanel, g, 0, 0);
                 } catch (Exception ex){
                     System.out.println("Failed rendering");
