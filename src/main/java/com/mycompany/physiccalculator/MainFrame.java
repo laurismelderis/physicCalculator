@@ -246,7 +246,6 @@ public class MainFrame extends javax.swing.JFrame{
         editParamClose = new javax.swing.JButton();
         editParamMistake = new javax.swing.JTextField();
         jDialogCalculate = new javax.swing.JDialog();
-        jScrollPane10 = new javax.swing.JScrollPane();
         calculatePanel = new javax.swing.JPanel();
         setParamCount = new javax.swing.JButton();
         paramCount = new javax.swing.JTextField();
@@ -426,16 +425,14 @@ public class MainFrame extends javax.swing.JFrame{
         calculatePanel.setLayout(calculatePanelLayout);
         calculatePanelLayout.setHorizontalGroup(
             calculatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 480, Short.MAX_VALUE)
+            .addGap(0, 490, Short.MAX_VALUE)
         );
         calculatePanelLayout.setVerticalGroup(
             calculatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 621, Short.MAX_VALUE)
+            .addGap(0, 670, Short.MAX_VALUE)
         );
 
-        jScrollPane10.setViewportView(calculatePanel);
-
-        jDialogCalculate.getContentPane().add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 450, 640));
+        jDialogCalculate.getContentPane().add(calculatePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 490, 670));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
@@ -844,13 +841,6 @@ public class MainFrame extends javax.swing.JFrame{
         writeFormulas(formula, calculatePanel, formulaSize);
     }//GEN-LAST:event_calculateButtonActionPerformed
 
-    private void calculatePanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calculatePanelKeyPressed
-        int index = evt.getKeyCode();
-        if (index == KeyEvent.VK_ESCAPE){
-            jDialogCalculate.setVisible(false);
-        }
-    }//GEN-LAST:event_calculatePanelKeyPressed
-
     private void jDialogCalculateKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jDialogCalculateKeyPressed
         int index = evt.getKeyCode();
         if (index == KeyEvent.VK_ESCAPE){
@@ -996,6 +986,13 @@ public class MainFrame extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_editParamMistakeKeyPressed
 
+    private void calculatePanelKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_calculatePanelKeyPressed
+        int index = evt.getKeyCode();
+        if (index == KeyEvent.VK_ESCAPE){
+            jDialogCalculate.setVisible(false);
+        }
+    }//GEN-LAST:event_calculatePanelKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -1070,7 +1067,6 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JList<String> jList9;
     private javax.swing.JScrollPane jScrollPane0;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;

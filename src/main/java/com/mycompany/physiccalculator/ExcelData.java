@@ -44,13 +44,16 @@ public class ExcelData {
             InputStream excelFile = new FileInputStream(fileName);
             Workbook wb = WorkbookFactory.create(excelFile);
             Sheet sheet = wb.getSheetAt(0);
-            for (int i = 0; i < 26; i++){
-                Row row = sheet.getRow(i);
-                Cell cell = row.getCell(column);
-                if (cell == null){
-                    break;
-                } else{
+            while (true){
+                try{
+                    Row row = sheet.getRow(counter);
+                    Cell cell = row.getCell(column);
+                    if (cell == null || cell.getCellType() != CellType.NUMERIC){
+                        break;
+                    }
                     counter++;
+                } catch(Exception e){
+                    break;
                 }
             }
         } catch (FileNotFoundException e){
