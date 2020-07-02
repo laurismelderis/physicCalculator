@@ -691,8 +691,9 @@ public class MainFrame extends javax.swing.JFrame{
         paramCount.setText(Integer.toString(activeLists));
         for (int i = 0; i < activeLists; i++){
             paramModels[i].clear();
-            for (int j = 0; j < excelData.getRowCount(i); j++){
-                paramModels[i].addElement(excelData.getData(j, i));
+            double data[] = excelData.getColumnData(i+1, excelData.getRowCount(i+1));
+            for (int j = 0; j < data.length; j++){
+                paramModels[i].addElement(data[j]);
             }
         }
         

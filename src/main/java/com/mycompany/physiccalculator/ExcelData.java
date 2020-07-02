@@ -16,20 +16,60 @@ public class ExcelData {
     public ExcelData(String fileName){
         this.fileName = fileName;
     }
+    public double[] getColumnData(int column, int rowCount){
+        double arr[] = new double[rowCount];
+        try {
+            InputStream excelFile = new FileInputStream(fileName);
+            Workbook wb = WorkbookFactory.create(excelFile);
+            Sheet sheet = wb.getSheetAt(0);
+            int counter = 0;
+            for (int i = 2; i < 27; i++){
+                Row row = sheet.getRow(i);
+                try {
+                    Cell cell = row.getCell(column);
+                    if (cell.getCellType() == CellType.NUMERIC){
+                        arr[counter] = cell.getNumericCellValue();
+                        counter++;
+                    }
+                } catch (Exception e){
+                
+                }
+            }
+        } catch (FileNotFoundException e){
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return arr;
+    }
     public int getColumnCount(){
+        int count = 0;
+        for (int column = 1; column < 11; column++){
+            double data[] = getColumnData(column, getRowCount(column));
+            if (data.length != 0){
+                count++;
+            }
+        }
+        return count;
+    }
+    public int getRowCount(int column){
         int counter = 0;
         try {
             InputStream excelFile = new FileInputStream(fileName);
             Workbook wb = WorkbookFactory.create(excelFile);
             Sheet sheet = wb.getSheetAt(0);
-            Row row = sheet.getRow(0);
-            
-            while (true){
-                Cell cell = row.getCell(counter);
-                if (cell == null || cell.getCellType() != CellType.NUMERIC){
-                    break;
+            for (int i = 2; i < 27; i++){
+                try {
+                    Row row = sheet.getRow(i);
+                    Cell cell = row.getCell(column);
+                    if (cell.getCellType() == CellType.NUMERIC){
+                        counter++;
+                    } else {
+                        continue;
+                    }
+                } catch (Exception e){
+                
                 }
-                counter++;
             }
         } catch (FileNotFoundException e){
             e.printStackTrace();
@@ -38,22 +78,22 @@ public class ExcelData {
         }
         return counter;
     }
-    public int getRowCount(int column){
-        int counter = 0;
+    public boolean isParamName(){
         try {
             InputStream excelFile = new FileInputStream(fileName);
             Workbook wb = WorkbookFactory.create(excelFile);
             Sheet sheet = wb.getSheetAt(0);
-            while (true){
-                try{
-                    Row row = sheet.getRow(counter);
-                    Cell cell = row.getCell(column);
-                    if (cell == null || cell.getCellType() != CellType.NUMERIC){
-                        break;
+            Row row = sheet.getRow(1);
+            for (int i = 1; i < 11; i++){
+                try {
+                    Cell cell = row.getCell(i);
+                    if (cell.getCellType() == CellType.STRING || cell == null){
+                        continue;
+                    } else {
+                        return false;
                     }
-                    counter++;
-                } catch(Exception e){
-                    break;
+                } catch (Exception e){
+                    continue;
                 }
             }
         } catch (FileNotFoundException e){
@@ -61,7 +101,7 @@ public class ExcelData {
         } catch (IOException e){
             e.printStackTrace();
         }
-        return counter;
+        return true;
     }
     public double getData(int row, int column){
         double answer = 0;
