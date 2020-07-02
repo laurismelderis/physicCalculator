@@ -217,7 +217,7 @@ public class MainFrame extends javax.swing.JFrame{
                 for(int i = 0; i < 10; i++){
                     paramMistakes[i].setText("0.01");
                     for (int j = 0; j < 8; j++){
-                        paramModels[i].addElement(j + i/10);
+                        paramModels[i].addElement((double)(j + i/10));
                     }
                 }
                 
@@ -800,14 +800,33 @@ public class MainFrame extends javax.swing.JFrame{
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
         int formulaSize = 16;
+        int realCount = 0;
         jDialogCalculate.setVisible(true);
-        JTextField activeNames[] = new JTextField[openedWindows];
-        DefaultListModel activeModels[] = new DefaultListModel[openedWindows];
-        double activeMistakes[] = new double[openedWindows];
+        boolean modelCheck[] = new boolean[openedWindows];
         for (int i = 0; i < openedWindows; i++){
-            activeNames[i] = paramNames[i];
-            activeModels[i] = paramModels[i];
-            activeMistakes[i] = Double.parseDouble(paramMistakes[i].getText().toString());
+            if (paramModels[i].isEmpty() || paramNames[i].getText().trim().equals("") || paramMistakes[i].getText().toString().trim().equals("")){
+                modelCheck[i] = false;
+            } else {
+                modelCheck[i] = true;
+            }
+        }
+        for (int i = 0; i < modelCheck.length; i++){
+            if (modelCheck[i] == true){
+                realCount++;
+            }
+        }
+        JTextField activeNames[] = new JTextField[realCount];
+        DefaultListModel activeModels[] = new DefaultListModel[realCount];
+        double activeMistakes[] = new double[realCount];
+        int counter = 0;
+        for (int i = 0; i < openedWindows; i++){
+            if (modelCheck[i] == false){
+                continue;
+            }
+            activeNames[counter] = paramNames[i];
+            activeModels[counter] = paramModels[i];
+            activeMistakes[counter] = Double.parseDouble(paramMistakes[i].getText().toString());
+            counter++;
         }
         Formulas formulas = new Formulas(activeNames, activeModels,
                 Double.parseDouble(studentsCoefficientComboBox.getSelectedItem().toString()),
