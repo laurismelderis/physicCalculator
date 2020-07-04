@@ -1,6 +1,8 @@
 package com.mycompany.physiccalculator;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,11 +12,48 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelData {
     private String fileName = "";
     public ExcelData(String fileName){
         this.fileName = fileName;
+    }
+    public Workbook createWorkbook(){
+        this.fileName += ".xlsx";
+        Workbook wb = null;
+        try {
+            FileOutputStream fos = null;
+            fos = new FileOutputStream(new File(this.fileName));
+            wb = new XSSFWorkbook();
+            Sheet sheet = wb.createSheet("FIRST");
+            wb.write(fos);
+            return wb;
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return wb;
+    }
+//    private <T> T[] getData(int column, int row){
+//        int size = getColumnCount();
+//        T data[] = (T[]) new Object[getColumnCount()];
+//    }
+    public void writeData(String file, int column, int row, String data){
+        try {
+            Workbook wb = new XSSFWorkbook();
+            Sheet sheet = wb.createSheet("FIRST");
+            Row roww = sheet.createRow(row);
+            Cell cell = roww.createCell(column);
+            cell.setCellValue(data);
+            FileOutputStream fos = new FileOutputStream(new File(file + ".xlsx"));
+            wb.write(fos);
+        } catch(Exception e){
+        
+        }
+    }
+    public void exportData(String file){
+//        Workbook wb = createWorkbook(file);
+//        writeData(wb);
     }
     public double[] getColumnData(int column, int rowCount){
         double arr[] = new double[rowCount];
@@ -82,7 +121,7 @@ public class ExcelData {
         String paramNames[] = new String[11];
         int counter = 0;
         for (int i = 0; i < paramNames.length-1; i++){
-            paramNames[i] = getData(1, i+1);
+            paramNames[i] = getCellData(1, i+1);
             if (paramNames[i].equals("-")){
                 counter++;
             }
@@ -95,7 +134,7 @@ public class ExcelData {
         int counter = 0;
         for (int i = 0; i < paramErrors.length-1; i++){
             try {
-                paramErrors[i] = Double.toString(getData(0, i+1));
+                paramErrors[i] = Double.toString(getCellData(0, i+1));
             } catch(Exception e){
                 paramErrors[i] = "-";
             }
@@ -107,7 +146,7 @@ public class ExcelData {
         paramErrors[10] = Integer.toString(paramErrors.length - counter - 1);
         return paramErrors;
     }
-    public <T> T getData(int row, int column){
+    public <T> T getCellData(int row, int column){
         T answer = null;
         try {
             InputStream excelFile = new FileInputStream(fileName);
