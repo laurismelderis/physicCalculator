@@ -306,6 +306,7 @@ public class MainFrame extends javax.swing.JFrame{
         paramError8 = new javax.swing.JTextField();
         paramError9 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        exportData = new javax.swing.JButton();
 
         jDialogFileChooser.setTitle("Open file");
         jDialogFileChooser.setMinimumSize(new java.awt.Dimension(600, 400));
@@ -436,9 +437,10 @@ public class MainFrame extends javax.swing.JFrame{
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
-        setMinimumSize(new java.awt.Dimension(750, 570));
+        setMinimumSize(new java.awt.Dimension(800, 570));
+        setPreferredSize(new java.awt.Dimension(800, 570));
         setResizable(false);
-        setSize(new java.awt.Dimension(750, 570));
+        setSize(new java.awt.Dimension(800, 570));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         setParamCount.setText("Set");
@@ -603,7 +605,7 @@ public class MainFrame extends javax.swing.JFrame{
                 calculateButtonActionPerformed(evt);
             }
         });
-        getContentPane().add(calculateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, -1, -1));
+        getContentPane().add(calculateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 10, 140, -1));
 
         jLabel2.setText("Students coefficient");
         getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 120, 20));
@@ -614,7 +616,7 @@ public class MainFrame extends javax.swing.JFrame{
         studentsCoefficientPanel.setLayout(studentsCoefficientPanelLayout);
         studentsCoefficientPanelLayout.setHorizontalGroup(
             studentsCoefficientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 60, Short.MAX_VALUE)
         );
         studentsCoefficientPanelLayout.setVerticalGroup(
             studentsCoefficientPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -635,6 +637,14 @@ public class MainFrame extends javax.swing.JFrame{
 
         jLabel3.setText("Measure errors");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 450, -1, -1));
+
+        exportData.setText("Export");
+        exportData.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exportDataActionPerformed(evt);
+            }
+        });
+        getContentPane().add(exportData, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 50, -1, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -1042,6 +1052,27 @@ public class MainFrame extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_calculatePanelKeyPressed
 
+    private void exportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDataActionPerformed
+        String file = "C:\\Users\\User\\Documents\\ey";
+        ExcelData excelData = new ExcelData(file);
+        Workbook wb = excelData.createWorkbook();
+        String data[][] = getData();
+        excelData.exportData(wb, file, data);
+        System.out.println("Done");
+    }//GEN-LAST:event_exportDataActionPerformed
+    private String[][] getData(){
+        String answer[][] = new String[][openedWindows];
+        for (int i = 0; i < openedWindows; i++){
+            String data = paramNames[i].getText();
+            answer[0][i] = data;
+        }
+        return answer;
+    }
+    private int getLongestModel(){
+        for (int i = 0; i < openedWindows; i++){
+        
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -1097,6 +1128,7 @@ public class MainFrame extends javax.swing.JFrame{
     private javax.swing.JButton editParamClose;
     private javax.swing.JTextField editParamMistake;
     private javax.swing.JTextField editParamName;
+    private javax.swing.JButton exportData;
     private javax.swing.JDialog jDialogCalculate;
     private javax.swing.JDialog jDialogEditParam;
     private javax.swing.JDialog jDialogFileChooser;

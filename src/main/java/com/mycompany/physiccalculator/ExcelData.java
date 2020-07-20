@@ -38,9 +38,8 @@ public class ExcelData {
 //        int size = getColumnCount();
 //        T data[] = (T[]) new Object[getColumnCount()];
 //    }
-    public void writeData(String file, int column, int row, String data){
+    public void writeData(Workbook wb, String file, int column, int row, String data){
         try {
-            Workbook wb = new XSSFWorkbook();
             Sheet sheet = wb.createSheet("FIRST");
             Row roww = sheet.createRow(row);
             Cell cell = roww.createCell(column);
@@ -51,10 +50,14 @@ public class ExcelData {
         
         }
     }
-    public void exportData(String file){
-//        Workbook wb = createWorkbook(file);
-//        writeData(wb);
+    public void exportData(Workbook wb, String file, String data[][]){
+        for (int i = 0; i < data.length; i++){
+            for (int j = 0; j < data[i].length; j++){
+                writeData(wb, file, j, i, data[i][j]);
+            }
+        }
     }
+        
     public double[] getColumnData(int column, int rowCount){
         double arr[] = new double[rowCount];
         try {
