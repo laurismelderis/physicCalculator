@@ -38,23 +38,26 @@ public class ExcelData {
 //        int size = getColumnCount();
 //        T data[] = (T[]) new Object[getColumnCount()];
 //    }
-    public void writeData(Workbook wb, String file, int column, int row, String data){
-        try {
-            Sheet sheet = wb.createSheet("FIRST");
-            Row roww = sheet.createRow(row);
-            Cell cell = roww.createCell(column);
-            cell.setCellValue(data);
+    public void writeData(Workbook wb, String file, String data[][]){
+        Sheet sheet = wb.getSheetAt(0);
+        for (int i = 0; i < data.length; i++){
+            Row roww = sheet.createRow(i);
+            for (int j = 0; j < data[i].length; j++){
+                Cell cell = roww.createCell(j);
+                try{
+                    cell.setCellValue(Double.parseDouble(data[i][j]));
+                } catch (Exception e){
+                    cell.setCellValue(data[i][j]);
+                }
+                
+            }
+        }
+        try{
             FileOutputStream fos = new FileOutputStream(new File(file + ".xlsx"));
             wb.write(fos);
-        } catch(Exception e){
-        
-        }
-    }
-    public void exportData(Workbook wb, String file, String data[][]){
-        for (int i = 0; i < data.length; i++){
-            for (int j = 0; j < data[i].length; j++){
-                writeData(wb, file, j, i, data[i][j]);
-            }
+            fos.close();
+        } catch (Exception e){
+            
         }
     }
         

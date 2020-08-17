@@ -1057,21 +1057,39 @@ public class MainFrame extends javax.swing.JFrame{
         ExcelData excelData = new ExcelData(file);
         Workbook wb = excelData.createWorkbook();
         String data[][] = getData();
-        excelData.exportData(wb, file, data);
+        // Printer ----
+        for (int i = 0; i < data.length; i++){
+            for (int j = 0; j < data.length; j++){
+                System.out.printf("%s \t", data[i][j]);
+            }
+            System.out.println();
+        }
+        // ------------
+        excelData.writeData(wb, file, data);
         System.out.println("Done");
     }//GEN-LAST:event_exportDataActionPerformed
     private String[][] getData(){
-        String answer[][] = new String[][openedWindows];
+        int longestModel = getLongestModel();
+        String answer[][] = new String[longestModel+1][openedWindows];
         for (int i = 0; i < openedWindows; i++){
             String data = paramNames[i].getText();
             answer[0][i] = data;
+            for (int j = 0; j < longestModel; j++){
+                String nr = paramModels[j].getElementAt(j).toString();
+                answer[j+1][i] = nr;
+            }
         }
         return answer;
     }
     private int getLongestModel(){
+        int longest = 0;
         for (int i = 0; i < openedWindows; i++){
-        
+            int nr = paramModels[i].getSize();
+            if (nr > longest){
+                longest = nr;
+            }
         }
+        return longest;
     }
     /**
      * @param args the command line arguments
