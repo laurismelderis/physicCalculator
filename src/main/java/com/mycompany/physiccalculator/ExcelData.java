@@ -15,16 +15,15 @@ import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelData {
-    private String fileName = "";
-    public ExcelData(String fileName){
+    private File fileName = null;
+    public ExcelData(File fileName){
         this.fileName = fileName;
     }
     public Workbook createWorkbook(){
-        this.fileName += ".xlsx";
         Workbook wb = null;
         try {
             FileOutputStream fos = null;
-            fos = new FileOutputStream(new File(this.fileName));
+            fos = new FileOutputStream(this.fileName);
             wb = new XSSFWorkbook();
             Sheet sheet = wb.createSheet("FIRST");
             wb.write(fos);
@@ -38,7 +37,7 @@ public class ExcelData {
 //        int size = getColumnCount();
 //        T data[] = (T[]) new Object[getColumnCount()];
 //    }
-    public void writeData(Workbook wb, String file, String data[][]){
+    public void writeData(Workbook wb, File file, String data[][]){
         Sheet sheet = wb.getSheetAt(0);
         for (int i = 0; i < data.length; i++){
             Row roww = sheet.createRow(i);
@@ -53,7 +52,7 @@ public class ExcelData {
             }
         }
         try{
-            FileOutputStream fos = new FileOutputStream(new File(file + ".xlsx"));
+            FileOutputStream fos = new FileOutputStream(file);
             wb.write(fos);
             fos.close();
         } catch (Exception e){

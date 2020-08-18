@@ -4,13 +4,11 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import javax.swing.Timer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -126,7 +124,7 @@ public class MainFrame extends javax.swing.JFrame{
         }
         studentsCoefficientComboBox.setSelectedIndex(1);
         
-        loadExample(3);
+        loadExample(1);
         
         for(int i = 0; i < paramLists.length; i++){
             paramLists[i].setModel(paramModels[i]);
@@ -438,7 +436,6 @@ public class MainFrame extends javax.swing.JFrame{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Physics Calculator");
         setMinimumSize(new java.awt.Dimension(800, 570));
-        setPreferredSize(new java.awt.Dimension(800, 570));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 570));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -694,13 +691,13 @@ public class MainFrame extends javax.swing.JFrame{
         FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV & XLSX, XLS", "csv", "xlsx", "xls"); //Change later
         jFileChooser1.setFileFilter(filter);
         fileName = jFileChooser1.getSelectedFile().getPath();
-        ExcelData excelData = new ExcelData(fileName);
+        File f = new File(fileName);
+        ExcelData excelData = new ExcelData(f);
         int activeModels = excelData.getColumnCount();
         String paramNames[] = excelData.getParamNames();
         String paramErrors[] = excelData.getParamErrors();
         int paramNameCount = Integer.parseInt(paramNames[10]);
         int paramErrorCount = Integer.parseInt(paramErrors[10]);
-        System.out.println("models = " + activeModels + " names = " + paramNameCount + " errors = " + paramErrorCount);
         if (activeModels >= paramNameCount && activeModels >= paramErrorCount){
             setParamVisible(activeModels);
             paramCount.setText(Integer.toString(activeModels));
@@ -1053,21 +1050,16 @@ public class MainFrame extends javax.swing.JFrame{
     }//GEN-LAST:event_calculatePanelKeyPressed
 
     private void exportDataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportDataActionPerformed
-        String file = "C:\\Users\\User\\Documents\\ey";
-        ExcelData excelData = new ExcelData(file);
+        JFileChooser fc = new JFileChooser();
+        fc.showSaveDialog(this);
+        fc.setDialogTitle("Save as");
+        File f = fc.getSelectedFile();
+        ExcelData excelData = new ExcelData(f);
         Workbook wb = excelData.createWorkbook();
         String data[][] = getData();
-        // Printer ----
-        for (int i = 0; i < data.length; i++){
-            for (int j = 0; j < data.length; j++){
-                System.out.printf("%s \t", data[i][j]);
-            }
-            System.out.println();
-        }
-        // ------------
-        excelData.writeData(wb, file, data);
-        System.out.println("Done");
+        excelData.writeData(wb, f, data);
     }//GEN-LAST:event_exportDataActionPerformed
+    
     private String[][] getData(){
         int longestModel = getLongestModel();
         String answer[][] = new String[longestModel+1][openedWindows];
@@ -1075,7 +1067,7 @@ public class MainFrame extends javax.swing.JFrame{
             String data = paramNames[i].getText();
             answer[0][i] = data;
             for (int j = 0; j < longestModel; j++){
-                String nr = paramModels[j].getElementAt(j).toString();
+                String nr = paramModels[i].getElementAt(j).toString();
                 answer[j+1][i] = nr;
             }
         }
